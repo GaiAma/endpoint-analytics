@@ -59,6 +59,7 @@ const sanitizeText = str =>
 const handlePixel = async (req, res) => {
   try {
     const { referer } = req.headers
+    if (!referer) return
     const { t } = req.query
     const { pathname, hostname } = new URL(referer)
     const title = sanitizeText(t)
