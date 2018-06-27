@@ -81,4 +81,4 @@ const handlePixel = async (req, res) => {
   }
 }
 
-export default middlewares(router(get(`/:rand/pixel.png`, handlePixel)))
+export default middlewares(router(get(`/:rand/p`, handlePixel)))
