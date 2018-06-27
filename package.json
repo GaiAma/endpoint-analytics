@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "micro",
-    "dev": "export $(cat ../.env | grep -v ^# | xargs) && micro-dev",
+    "dev": "export $(cat ../.env | grep -v ^# | xargs) && micro-dev -p 7789",
     "build": "NODE_ENV=production babel src --out-dir .",
     "watch": "yarn build --watch",
     "deploy": "now --token $NOW_TOKEN --npm",
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "cuid": "^2.1.1",
+    "he": "^1.1.1",
     "jsan": "^3.1.10",
     "micro": "^9.1.4",
     "micro-cors": "^0.1.0",

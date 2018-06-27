@@ -5,6 +5,7 @@ import noSniff from 'micro-nosniff'
 import ratelimit from 'micro-ratelimit'
 import Sparkpost from 'sparkpost'
 import { compose, curry } from 'ramda'
+import he from 'he'
 import sanitizeHtml from 'sanitize-html'
 import ua from 'universal-analytics'
 import { stringify } from 'jsan'
@@ -12,7 +13,6 @@ import noCache from './micro-no-cache'
 import pixel from './pixel'
 
 const isProduction = process.env.NODE_ENV === `production`
-
 const visitor = ua(process.env.GOOGLE_ANALYTICS_ID)
 
 const middlewares = compose(
@@ -60,20 +60,22 @@ const handlePixel = async (req, res) => {
     const { referer } = req.headers
     if (!referer) return
     const { t } = req.query
-    const { pathname, hostname } = new URL(referer)
-    const title = sanitizeText(t)
+    const { hostname, pathname } = new URL(referer)
+    const [lang] = pathname.replace(/^\/|\/$/, ``).split(`/`)
+    const title = he.decode(sanitizeText(t)).replace(` - GaiAma.org`, ``)
     const { id } = req.params
+    const params = {
+      dp: pathname,
+      dt: title,
+      dh: hostname,
+      aip: 1,
+      uid: id,
+      ul: lang,
+    }
     visitor.set(`uid`, id)
-    visitor.pageview(
-      {
-        dp: pathname,
-        dt: title,
-        dh: hostname,
-      },
-      async error => {
-        if (error) await sendError({ error, req })
-      }
-    )
+    visitor.pageview(params, async error => {
+      if (error) await sendError({ error, req })
+    })
     res.setHeader(`Content-Type`, `image/gif`)
     res.end(pixel, `binary`)
   } catch (error) {
