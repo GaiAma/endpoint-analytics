@@ -13,7 +13,6 @@ import noCache from './micro-no-cache'
 import pixel from './pixel'
 
 const isProduction = process.env.NODE_ENV === `production`
-const visitor = ua(process.env.GOOGLE_ANALYTICS_ID)
 
 const middlewares = compose(
   noCache,
@@ -59,20 +58,24 @@ const handlePixel = async (req, res) => {
   try {
     const { referer } = req.headers
     if (!referer) return
-    const { t } = req.query
+
+    const { title: _title, uid: _uid } = req.query
     const { hostname, pathname } = new URL(referer)
     const [lang] = pathname.replace(/^\/|\/$/, ``).split(`/`)
-    const title = he.decode(sanitizeText(t)).replace(` - GaiAma.org`, ``)
-    const { id } = req.params
+    const title = he.decode(sanitizeText(_title)).replace(` - GaiAma.org`, ``)
+    const uid = sanitizeText(_uid)
+
     const params = {
       dp: pathname,
       dt: title,
       dh: hostname,
       aip: 1,
-      uid: id,
+      uid,
       ul: lang,
     }
-    visitor.set(`uid`, id)
+    const visitor = ua(process.env.GOOGLE_ANALYTICS_ID, uid, {
+      strictCidFormat: false,
+    })
     visitor.pageview(params, async error => {
       if (error) await sendError({ error, req })
     })
@@ -83,4 +86,4 @@ const handlePixel = async (req, res) => {
   }
 }
 
-export default middlewares(router(get(`/:id/p`, handlePixel)))
+export default middlewares(router(get(`/:random/p`, handlePixel)))

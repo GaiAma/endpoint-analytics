@@ -1,6 +1,6 @@
 {
   "name": "gaiama-endpoint-analytics",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Analytics endpoint for GaiAma.org website",
   "main": "index.js",
   "author": "CanRau <cansrau@gmail.com>",
