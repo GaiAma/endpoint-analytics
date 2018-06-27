@@ -1,0 +1,14 @@
+{
+  "name": "gaiama-endpoint-analytics",
+  "public": true,
+  "alias": "gaiama-analytics",
+  "env": {
+    "GOOGLE_ANALYTICS_ID": "@google_analytics_id",
+    "ENDPOINT_CONTACT_NAME": "@gaiama_contact_name",
+    "ENDPOINT_CONTACT_EMAIL": "@gaiama_contact_email",
+    "ENDPOINT_SPARKPOST_EMAIL": "@gaiama_sparkpost_email",
+    "SPARKPOST_API_KEY": "@sparkpost_api_key",
+    "ANALYTICS_CRASH_RECIPIENT": "@analytics_crash_recipient",
+    "ANALYTICS_CRASH_SENDER": "@analytics_crash_sender"
+  }
+}

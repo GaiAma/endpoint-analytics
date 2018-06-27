@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+- 'lts/*'
+cache: yarn
+script: yarn deploy
+after_script: yarn alias
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+env:
+  global:
+  # NOW_TOKEN
+  - secure: N9ssz5+FQhD4g495KF/0yPKlWuuGjw9+u001nVTA9Owb/pa5BIX2deBMHAul928PItC5wHx2LcksT8Ao0VNIsPbJipnyX9JfKU/p6ElxJfwPm9ZNACIp06iSgwMqxG71rV8KKuizR95aphZiQRxkl8Dq2p6TUbobXkm0FZHOrxkFYiPcMdZ7VG+hI/5eJd3Hblpxrjd+CszEJThQdyW2ehNcVQAnUmCX/Co1ZHxVrr5jJaXhTjnkOVo4PT/5A8K2apvEYxPEAybOhNfDBOEzNTl+kydoNfqMjV5+/M2/l7rh9lvCqDjKVN6a9KI4zDJ7hTmDbXbkWhQ4CAtXUj5DPpq/7crM2X/o9STLPJAlkY397LlZWxGHRKQHKHxTQws6V7h1Mfzppj/3DU+5x3oRDrav5GuzL/RRKm98wJ1Yd+o52uo3F0C8mbzpyMFZfqM6wvLFNA/quZ5iEtYigSMSBnMLA4NzDK/2kZg++wP5i3M6n3uWd5q3cxjkaLOy7q17Drrr8lUHfxvK7NwkIMLo2BQyTVvk5VM/XOEJnOQHrh0rYN2Gq/cuw2+Sqa3W4j73DEWFXzklG744+q4cZfKhTKv31hueA2Opc/JeNnsS1wDERlPmxDQmhGgXxgwGYUffu6LB28ecCC6qOJM612QyYb8PFbiX2q7KJfehAKeDd+I=

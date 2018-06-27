@@ -1,0 +1,46 @@
+{
+  "name": "gaiama-endpoint-analytics",
+  "version": "1.0.0",
+  "description": "Analytics endpoint for GaiAma.org website",
+  "main": "index.js",
+  "author": "CanRau <cansrau@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "micro",
+    "dev": "export $(cat ../.env | grep -v ^# | xargs) && micro-dev",
+    "build": "NODE_ENV=production babel src --out-dir .",
+    "watch": "yarn build --watch",
+    "deploy": "now --token $NOW_TOKEN --npm",
+    "alias": "now alias --token $NOW_TOKEN",
+    "now:cleanup": "now rm gaiama-endpoint-analytics --safe --yes"
+  },
+  "dependencies": {
+    "cuid": "^2.1.1",
+    "jsan": "^3.1.10",
+    "micro": "^9.1.4",
+    "micro-cors": "^0.1.0",
+    "micro-nosniff": "^1.0.1",
+    "micro-ratelimit": "^0.3.0",
+    "microrouter": "^3.1.2",
+    "ramda": "^0.25.0",
+    "sanitize-html": "^1.18.2",
+    "sparkpost": "^2.1.2",
+    "universal-analytics": "^0.4.17"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.42",
+    "@babel/core": "^7.0.0-beta.42",
+    "@babel/preset-env": "^7.0.0-beta.42",
+    "ava": "^0.25.0",
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.18.1",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "micro-dev": "^2.2.2",
+    "now": "^11.1.7",
+    "prettier": "^1.11.1",
+    "test-listen": "^1.1.0"
+  }
+}
