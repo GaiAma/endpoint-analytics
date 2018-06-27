@@ -3,7 +3,6 @@ import { router, get } from 'microrouter'
 import microCors from 'micro-cors'
 import noSniff from 'micro-nosniff'
 import ratelimit from 'micro-ratelimit'
-import cuid from 'cuid'
 import Sparkpost from 'sparkpost'
 import { compose, curry } from 'ramda'
 import sanitizeHtml from 'sanitize-html'
@@ -63,7 +62,8 @@ const handlePixel = async (req, res) => {
     const { t } = req.query
     const { pathname, hostname } = new URL(referer)
     const title = sanitizeText(t)
-    visitor.set(`uid`, cuid())
+    const { id } = req.params
+    visitor.set(`uid`, id)
     visitor.pageview(
       {
         dp: pathname,
@@ -81,4 +81,4 @@ const handlePixel = async (req, res) => {
   }
 }
 
-export default middlewares(router(get(`/:rand/p`, handlePixel)))
+export default middlewares(router(get(`/:id/p`, handlePixel)))
