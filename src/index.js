@@ -59,11 +59,11 @@ const handlePixel = async (req, res) => {
     const { referer } = req.headers
 
     const {
-      title: _title,
+      title: _title = ``,
       uid: _userId,
       utm_source: _campaignSource = ``,
     } = req.query
-    const { hostname, pathname } = referer ? new URL(referer) : {}
+    const { hostname = ``, pathname = `` } = referer ? new URL(referer) : {}
     const [lang] = pathname.replace(/^\/|\/$/, ``).split(`/`)
     const title = he.decode(sanitizeText(_title)).replace(` - GaiAma.org`, ``)
     const userId = sanitizeText(_userId)
