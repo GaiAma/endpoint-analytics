@@ -57,30 +57,40 @@ const sanitizeText = str =>
 const handlePixel = async (req, res) => {
   try {
     const { referer } = req.headers
-    if (!referer) return
 
-    const { title: _title, uid: _uid, utm_source: _source = `` } = req.query
-    const { hostname, pathname } = new URL(referer)
+    const {
+      title: _title,
+      uid: _userId,
+      utm_source: _campaignSource = ``,
+    } = req.query
+    const { hostname, pathname } = referer ? new URL(referer) : {}
     const [lang] = pathname.replace(/^\/|\/$/, ``).split(`/`)
     const title = he.decode(sanitizeText(_title)).replace(` - GaiAma.org`, ``)
-    const uid = sanitizeText(_uid)
-    const utm_source = sanitizeText(_source)
+    const userId = sanitizeText(_userId)
+    const campaignSource = sanitizeText(_campaignSource)
+
+    if (!referer || !campaignSource) {
+      return
+    }
 
     const params = {
-      dp: pathname,
-      dt: title,
-      dh: hostname,
-      aip: 1,
-      uid,
-      ul: lang,
-      cs: utm_source,
+      documentTitle: title,
+      documentPath: pathname,
+      documentHostName: hostname,
+      anonymizeIp: 1,
+      userLanguage: lang,
+      userId,
+      campaignSource,
     }
-    const visitor = ua(process.env.GOOGLE_ANALYTICS_ID, uid, {
+
+    const visitor = ua(process.env.GOOGLE_ANALYTICS_ID, userId, {
       strictCidFormat: false,
     })
+
     visitor.pageview(params, async error => {
       if (error) await sendError({ error, req })
     })
+
     res.setHeader(`Content-Type`, `image/gif`)
     res.end(pixel, `binary`)
   } catch (error) {
