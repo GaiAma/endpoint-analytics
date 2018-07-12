@@ -59,11 +59,12 @@ const handlePixel = async (req, res) => {
     const { referer } = req.headers
     if (!referer) return
 
-    const { title: _title, uid: _uid } = req.query
+    const { title: _title, uid: _uid, utm_source: _source = `` } = req.query
     const { hostname, pathname } = new URL(referer)
     const [lang] = pathname.replace(/^\/|\/$/, ``).split(`/`)
     const title = he.decode(sanitizeText(_title)).replace(` - GaiAma.org`, ``)
     const uid = sanitizeText(_uid)
+    const utm_source = sanitizeText(_source)
 
     const params = {
       dp: pathname,
@@ -72,6 +73,7 @@ const handlePixel = async (req, res) => {
       aip: 1,
       uid,
       ul: lang,
+      cs: utm_source,
     }
     const visitor = ua(process.env.GOOGLE_ANALYTICS_ID, uid, {
       strictCidFormat: false,
