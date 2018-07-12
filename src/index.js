@@ -58,32 +58,22 @@ const handlePixel = async (req, res) => {
   try {
     const { referer } = req.headers
 
-    const {
-      title: _title = ``,
-      uid: _userId,
-      utm_source: _campaignSource = ``,
-    } = req.query
-    const { hostname = ``, pathname = `` } = referer ? new URL(referer) : {}
+    const { title: _title, uid: _uid } = req.query
+    const { hostname, pathname } = new URL(referer)
     const [lang] = pathname.replace(/^\/|\/$/, ``).split(`/`)
     const title = he.decode(sanitizeText(_title)).replace(` - GaiAma.org`, ``)
-    const userId = sanitizeText(_userId)
-    const campaignSource = sanitizeText(_campaignSource)
-
-    if (!referer || !campaignSource) {
-      return
-    }
+    const uid = sanitizeText(_uid)
 
     const params = {
-      documentTitle: title,
-      documentPath: pathname,
-      documentHostName: hostname,
-      anonymizeIp: 1,
-      userLanguage: lang,
-      userId,
-      campaignSource,
+      dp: pathname,
+      dt: title,
+      dh: hostname,
+      aip: 1,
+      uid,
+      ul: lang,
     }
 
-    const visitor = ua(process.env.GOOGLE_ANALYTICS_ID, userId, {
+    const visitor = ua(process.env.GOOGLE_ANALYTICS_ID, uid, {
       strictCidFormat: false,
     })
 
